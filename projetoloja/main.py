@@ -1,13 +1,14 @@
-from registro_de_vendas import registrar_venda
+from registrar_venda import registrar_venda
 from registrar_saida import registrar_saida
 from listar_vendas import listar_vendas
 from listar_saidas import listar_saidas
 from gerar_relatorio import gerar_relatorio
 from funcaocontinuar import continuar
+from fechar_caixa import fechar_caixa
 
 vendas = []
 saidas = []
-caixa_total = 0
+caixa_final = 0
 
 while True:
     print("==============================================")
@@ -23,8 +24,6 @@ while True:
     print()
     print("==============================================")
     resp = int(input("Digite sua resposta: "))
-
-    print("Labubu")
 
     if resp == 1:
         while True:
@@ -54,11 +53,11 @@ while True:
             print("Voce nao adicionou nenhuma saida!")
     elif resp == 5:
         if len(saidas) > 0 or len(vendas) > 0:
-            caixa_total = gerar_relatorio(vendas, saidas)
+            gerar_relatorio(vendas, saidas)
         else:
             print("Voce nao adicionou nenhuma venda ou saida!")
     elif resp == 6:
-        print("Você está saindo do sistema...")
+        caixa_total = fechar_caixa(vendas, saidas)
         break
     else:
         print("Resposta inválida!")

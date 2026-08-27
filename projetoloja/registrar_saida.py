@@ -7,6 +7,6 @@ def registrar_saida():
               print("O valor deve ser maior do que zero!")
               valor = float(input("Valor: R$ "))
         return {
-                "saida": saida,
+                "nome": saida,
                 "valor": valor
         }
