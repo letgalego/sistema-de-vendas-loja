@@ -24,6 +24,8 @@ while True:
     print("==============================================")
     resp = int(input("Digite sua resposta: "))
 
+    print("Labubu")
+
     if resp == 1:
         while True:
             vendas.append(registrar_venda())
