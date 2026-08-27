@@ -2,7 +2,7 @@ def continuar():
     while True:
         print()
         print("==============================================")
-        continuar = input("Deseja sair? (S/N): ")
+        continuar = input("Deseja voltar para o sistema? (S/N): ")
         if continuar.lower() != 's' and continuar.lower() != 'n':
             print("Resposta invalida.")
         if continuar.lower() == 's':
