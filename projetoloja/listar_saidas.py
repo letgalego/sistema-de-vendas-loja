@@ -9,12 +9,3 @@ def listar_saidas(lista_saidas):
     print(f"Total: R$ {total}")
     print("==============================================")
     print()
-    while True:
-        resp = input("Sair agora? (S/N) ")
-
-        if resp.lower() != 's' or resp.lower() != 'n':
-            print("Resposta invalida.")
-        if resp.lower() == 's':
-            break
-        else:
-            continue
