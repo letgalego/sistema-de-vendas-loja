@@ -16,4 +16,6 @@ def gerar_relatorio(lista_vendas, lista_saidas):
             print(f"{saida['nome']} | R$ {saida['valor']}")
         print("==============================================")
         print()
-    print(f"Caixa total de hoje: R$ {sum(venda['valor'] for venda in lista_vendas) - sum(saida['valor'] for saida in lista_saidas):.2f}")
+    caixa_total = sum(venda['valor'] for venda in lista_vendas) - sum(saida['valor'] for saida in lista_saidas)
+    print(f"Caixa total de hoje: R$ {caixa_total:.2f}")
+    return caixa_total
