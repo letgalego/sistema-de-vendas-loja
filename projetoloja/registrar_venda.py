@@ -1,15 +1,19 @@
-from validacoes import valor_validado, nome_validado
+from validacoes import valor_validado, produto_validado
 
 def registrar_venda():
-    produto = input("Produto: ")
-    while not nome_validado(produto):
-          print("Nome invalido!")
-          produto = input("Produto: ")
-    valor = float(input("Valor: R$ "))
-    while not valor_validado(valor):
-            print("O valor deve ser maior do que zero!")
+    while True:
+        try:
+            produto = input("Produto: ")
+            while not produto_validado(produto):
+                produto = input("Produto: ")
             valor = float(input("Valor: R$ "))
-    return {
-        "produto": produto,
-        "valor": valor
-    }
+            while not valor_validado(valor):
+                    print("O valor deve ser maior do que zero!")
+                    valor = float(input("Valor: R$ "))
+        except ValueError:
+             print("Digite um número válido!")
+             continue
+        return {
+            'produto': produto,
+            'valor': valor
+        }

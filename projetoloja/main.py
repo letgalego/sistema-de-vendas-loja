@@ -23,41 +23,44 @@ while True:
     print("==============================================")
     print()
     print("==============================================")
-    resp = int(input("Digite sua resposta: "))
+    try:
+        resp = int(input("Digite sua resposta: "))
 
-    if resp == 1:
-        while True:
-            vendas.append(registrar_venda())
-            if continuar():
-                break
-    elif resp == 2:
-        while True:
-            saidas.append(registrar_saida())
-            if continuar():
-                break
-    elif resp == 3:
-        if len(vendas) > 0:
+        if resp == 1:
             while True:
-                listar_vendas(vendas)
+                vendas.append(registrar_venda())
                 if continuar():
                     break
-        else:
-            print("Voce nao adicionou nenhuma venda!")
-    elif resp == 4:
-        if len(saidas) > 0:
+        elif resp == 2:
             while True:
-                listar_saidas(saidas)
+                saidas.append(registrar_saida())
                 if continuar():
                     break
+        elif resp == 3:
+            if len(vendas) > 0:
+                while True:
+                    listar_vendas(vendas)
+                    if continuar():
+                        break
+            else:
+                print("Voce nao adicionou nenhuma venda!")
+        elif resp == 4:
+            if len(saidas) > 0:
+                while True:
+                    listar_saidas(saidas)
+                    if continuar():
+                        break
+            else:
+                print("Voce nao adicionou nenhuma saida!")
+        elif resp == 5:
+            if len(saidas) > 0 or len(vendas) > 0:
+                gerar_relatorio(vendas, saidas)
+            else:
+                print("Voce nao adicionou nenhuma venda ou saida!")
+        elif resp == 6:
+            caixa_total = fechar_caixa(vendas, saidas)
+            break
         else:
-            print("Voce nao adicionou nenhuma saida!")
-    elif resp == 5:
-        if len(saidas) > 0 or len(vendas) > 0:
-            gerar_relatorio(vendas, saidas)
-        else:
-            print("Voce nao adicionou nenhuma venda ou saida!")
-    elif resp == 6:
-        caixa_total = fechar_caixa(vendas, saidas)
-        break
-    else:
-        print("Resposta inválida!")
+            print("Resposta inválida!")
+    except ValueError:
+        print("Digite um número válido!")
