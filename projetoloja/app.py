@@ -30,7 +30,7 @@ def main():
         layout="wide"
     )
 
-    # Guarda as vendas entre as interações com a interface.
+    # guarda as listas durante as interaçoes na interface
     if "vendas" not in st.session_state:
         st.session_state.vendas = []
     if "saidas" not in st.session_state:
@@ -134,7 +134,6 @@ def main():
                 )
 
                 with st.expander(titulo):
-                    # Também aceita registros antigos de um único produto.
                     itens = venda.get("itens", [venda])
 
                     st.dataframe(
