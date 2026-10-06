@@ -1,5 +1,5 @@
 import streamlit as st
-from formularios import criar_venda, formulario_venda, formulario_saida, criar_saida
+from formularios import formulario_venda, formulario_pagamento,formulario_saida,criar_saida,resumo_pagamento, registrar_e_limpar
 
 def montar_tabela_vendas(vendas):
     tabela = []
@@ -35,6 +35,8 @@ def main():
         st.session_state.vendas = []
     if "saidas" not in st.session_state:
         st.session_state.saidas = []
+    if "carrinho" not in st.session_state:
+        st.session_state.carrinho = []
 
     rotulos = {
         "Registrar venda": "🛒 Registrar venda",
@@ -57,16 +59,54 @@ def main():
         )
 
     if opcao == "Registrar venda":
-        produto, quantidade, valor, registrar = formulario_venda()
+        col_formulario, col_resumo = st.columns([2, 1])
 
-        if registrar:
-            try:
-                venda = criar_venda(produto, quantidade, valor)
-            except ValueError as erro:
-                st.error(str(erro))
+        with col_formulario:
+            formulario_venda()
+
+            st.subheader("Itens da compra")
+
+            if st.session_state.carrinho:
+                st.dataframe(
+                    montar_tabela_vendas(st.session_state.carrinho),
+                    hide_index=True
+                )
             else:
-                st.session_state.vendas.append(venda)
-                st.success("Venda registrada!")
+                st.info("Nenhum item no carrinho.")
+
+        total_compra = sum(
+            item["valor_total"]
+            for item in st.session_state.carrinho
+        )
+
+        with col_resumo:
+            with st.container(border=True):
+                pagamento, recebido = formulario_pagamento()
+
+                st.divider()
+
+                resumo_pagamento(
+                    pagamento,
+                    total_compra,
+                    recebido
+                )
+
+                st.button(
+                    "Finalizar venda",
+                    key="finalizar_venda",
+                    on_click=registrar_e_limpar,
+                    disabled=not st.session_state.carrinho
+                )
+
+        mensagem = st.session_state.pop("mensagem_venda", None)
+
+        if mensagem is not None:
+            tipo, texto = mensagem
+
+            if tipo == "sucesso":
+                st.success(texto)
+            else:
+                st.error(texto)
 
     elif opcao == "Registrar saída":
         descricao, valor, registrar = formulario_saida()
@@ -81,13 +121,39 @@ def main():
                 st.success("Saída registrada!")
 
     elif opcao == "Relatorio do dia":
-
         st.subheader("Vendas registradas")
 
         if st.session_state.vendas:
-            st.dataframe(
-                montar_tabela_vendas(st.session_state.vendas)
-            )
+            for numero, venda in enumerate(
+                st.session_state.vendas,
+                start=1
+            ):
+                titulo = (
+                    f"Venda {numero} — "
+                    f"R$ {venda['valor_total']:.2f}"
+                )
+
+                with st.expander(titulo):
+                    # Também aceita registros antigos de um único produto.
+                    itens = venda.get("itens", [venda])
+
+                    st.dataframe(
+                        montar_tabela_vendas(itens),
+                        hide_index=True
+                    )
+
+                    pagamento = venda.get("forma_pagamento")
+
+                    if pagamento is not None:
+                        st.write(f"Pagamento: {pagamento}")
+
+                    if pagamento == "Dinheiro":
+                        st.write(
+                            f"Recebido: R$ {venda['recebido']:.2f}"
+                        )
+                        st.write(
+                            f"Troco: R$ {venda['troco']:.2f}"
+                        )
         else:
             st.info("Nenhuma venda registrada.")
 
