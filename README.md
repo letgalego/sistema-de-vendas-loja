@@ -4,6 +4,8 @@ Projeto de estudo em Python com interface web em **Streamlit** para registrar ve
 
 O sistema começou como um programa de terminal e passou a utilizar uma interface com menu lateral, formulários, tabelas e resumo de pagamento. A versão atual permite montar um carrinho com vários produtos antes de finalizar a venda.
 
+App publicado: https://caixa-de-loja-letgalego.streamlit.app/
+
 ## Funcionalidades
 
 - Adicionar produtos ao carrinho com nome, quantidade e valor unitário.
